@@ -1,6 +1,6 @@
 <?php
     class Endereco {
-        private $id = 0;
+        private $id = null;
         private $endereco = '';
         private $bairro = '';
         private $cidade = '';

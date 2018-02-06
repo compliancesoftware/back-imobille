@@ -7,6 +7,7 @@
             require '/utils/ResponseMessage.php';
 
             require '/models/Endereco.php';
+            require '/models/Teste.php';
         
             require '/dao/Dao.php';
 

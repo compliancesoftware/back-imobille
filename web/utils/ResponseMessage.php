@@ -51,10 +51,10 @@
 
             if($this->entity != null) {
                 if(is_array($this->entity)) {
-                    $str = str_replace('entity:{}','"entity":'.Jsonify::arrayToJson($this->entity),$str);
+                    $str = str_replace('"entity":{}','"entity":'.Jsonify::arrayToJson($this->entity),$str);
                 }
 				else {
-                    $str = str_replace('entity:{}','"entity":'.$this->entity->serialize(),$str);
+                    $str = str_replace('"entity":{}','"entity":'.$this->entity->serialize(),$str);
                 }
             }
 
