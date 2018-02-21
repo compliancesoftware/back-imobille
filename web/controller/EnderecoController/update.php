@@ -9,6 +9,7 @@
     if($data != null) {
         $endereco = new Endereco();
 
+        $endereco->setId($data['id']);
         $endereco->setEndereco($data['endereco']);
         $endereco->setBairro($data['bairro']);
         $endereco->setCidade($data['cidade']);
@@ -22,7 +23,7 @@
 
         $service = new EnderecoService();
         
-        echo $service->createEndereco($endereco)->serialize();
+        echo $service->updateEndereco($endereco)->serialize();
     }
     else {
         $message = new ResponseMessage();

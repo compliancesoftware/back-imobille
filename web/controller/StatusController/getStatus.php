@@ -6,9 +6,8 @@
 
     $teste = new Teste();
     
-    if(isset($_POST['teste']['mensagem'])) {
-        $teste->setMensagem($_POST['teste']['mensagem']);
-    }
+    $data = json_decode(file_get_contents('php://input'), true);
+    $teste->setMensagem($data['mensagem']);
 
     $message = new ResponseMessage();
     $message->setMessage('Sistema funcionando perfeitamente.');

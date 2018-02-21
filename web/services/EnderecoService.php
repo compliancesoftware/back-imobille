@@ -7,19 +7,83 @@
         }
 
         public function getEnderecoById($id) {
-            return $this->enderecoDao->getEnderecoById($id);
+            $response = LoginSession::authenticate();
+            $autenticado = $response->getEntity();
+
+            if($autenticado != null) {
+                if(LoginSession::canListAddress($autenticado)) {
+                    return $this->enderecoDao->getEnderecoById($id);
+                }
+                else {
+                    $message = new ResponseMessage();
+                    $message->setMessage('Sem permissões suficientes.');
+
+                    return $message;
+                }
+            }
+            else {
+                return $response;
+            }
         }
 
         public function listEnderecos() {
-            return $this->enderecoDao->listEnderecos($id);
+            $response = LoginSession::authenticate();
+            $autenticado = $response->getEntity();
+
+            if($autenticado != null) {
+                if(LoginSession::canListAddress($autenticado)) {
+                    return $this->enderecoDao->listEnderecos();
+                }
+                else {
+                    $message = new ResponseMessage();
+                    $message->setMessage('Sem permissões suficientes.');
+
+                    return $message;
+                }
+            }
+            else {
+                return $response;
+            }
         }
 
         public function createEndereco($endereco) {
-            return $this->enderecoDao->createEndereco($endereco);
+            $response = LoginSession::authenticate();
+            $autenticado = $response->getEntity();
+            
+            if($autenticado != null) {
+                if(LoginSession::canUpdateAddress($autenticado)){
+                    return $this->enderecoDao->createEndereco($endereco);
+                }
+                else {
+                    $message = new ResponseMessage();
+                    $message->setMessage('Sem permissões suficientes.');
+    
+                    return $message;
+                }
+            }
+            else {
+                return $response;
+            }
         }
 
         public function updateEndereco($endereco) {
-            return $this->enderecoDao->updateEndereco($endereco);
+            $response = LoginSession::authenticate();
+            $autenticado = $response->getEntity();
+            
+            if($autenticado != null) {
+                if(LoginSession::canUpdateAddress($autenticado)){
+                    return $this->enderecoDao->updateEndereco($endereco);
+                }
+                else {
+                    $message = new ResponseMessage();
+                    $message->setMessage('Sem permissões suficientes.');
+    
+                    return $message;
+                }
+            }
+            else {
+                return $response;
+            }
         }
 
     }

@@ -61,13 +61,38 @@
         }
 
         protected function retrieve($object) {
+            return $this->retrieveWithConditions($object, null, null);
+        }
+
+        protected function retrieveWithConditions($object, $filterVars, $filterValues) {
             try {
                 $class = get_class($object);
                 $entity = $object->entityName();
                 $connection = $this->conn;
                 if($connection != null) {
-                    $sql = 'SELECT * FROM '.strtolower($entity);
-                    $statement = $connection->query($sql);
+                    $sql = 'SELECT * FROM '.$entity;
+                    $statement = null;
+                    
+                    if($filterVars != null) {
+                        $sql .= ' WHERE ';
+                        $varsCount = count($filterVars);
+                        for($i = 0;$i < $varsCount;$i++) {
+                            if($i < $varsCount - 1) {
+                                $sql .= $filterVars[$i] . '=:' . $filterVars[$i] . ' AND';
+                            }
+                            else {
+                                $sql .= $filterVars[$i] . '=:' . $filterVars[$i];
+                            }
+                        }
+                        $statement = $connection->prepare($sql);
+                        for($i = 0;$i < $varsCount;$i++) {
+                            $statement->bindParam(':' . $filterVars[$i],$filterValues[$i]);
+                        }
+                        $statement->execute();
+                    }
+                    else {
+                        $statement = $connection->query($sql);
+                    }
                     
                     $resultsArray = array();
             
@@ -105,7 +130,7 @@
 
                 $connection = $this->conn;
                 if($connection != null) {
-                    $statement = $connection->prepare('SELECT * FROM '.strtolower($entity).' WHERE id = :id');
+                    $statement = $connection->prepare('SELECT * FROM '.$entity.' WHERE id = :id');
                     $statement->bindParam(':id',$id);
                     $statement->execute();
                     $statement->setFetchMode(PDO::FETCH_CLASS, $class);

@@ -51,7 +51,16 @@
 
             if($this->entity != null) {
                 if(is_array($this->entity)) {
-                    $str = str_replace('"entity":{}','"entity":'.Jsonify::arrayToJson($this->entity),$str);
+                    $arrayLen = count($this->entity);
+                    $strArrayTemplate = '[';
+                    for($i = 0;$i < $arrayLen;$i++) {
+                        $strArrayTemplate .= '{}';
+                        if($i < ($arrayLen - 1)) {
+                            $strArrayTemplate .= ',';
+                        }
+                    }
+                    $strArrayTemplate .= ']';
+                    $str = str_replace('"entity":'.$strArrayTemplate,'"entity":'.Jsonify::arrayToJson($this->entity).'',$str);
                 }
 				else {
                     $str = str_replace('"entity":{}','"entity":'.$this->entity->serialize(),$str);
